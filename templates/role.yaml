@@ -13,9 +13,22 @@ rules:
     - ""
   resources:
     - pods
-    - endpoints
+  verbs:
+    - get
+    - patch
+    - list
+- apiGroups:
+    - ""
+  resources:
     - configmaps
+  verbs:
+    - get
+    - create
+    - update
+- apiGroups:
+    - ""
+  resources:
     - events
   verbs:
-    - "*"
+    - create
 {{- end -}}
