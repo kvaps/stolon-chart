@@ -60,6 +60,8 @@ spec:
           - name: HOST
             value: {{ template "stolon.fullname" . }}-proxy
         command: ["/bin/bash", "-e", "/tmp/sql-script/create_script.sh"]
+        resources:
+          {{- toYaml .Values.job.initdbScripts.resources | nindent 10 }}
         volumeMounts:
           - mountPath: "/tmp/sql-script"
             readOnly: true
@@ -73,4 +75,6 @@ spec:
         - name: wait-for-database
           image: jwilder/dockerize
           command: ['dockerize', '-timeout', '30s', '-wait', 'tcp://{{ template "stolon.fullname" . }}-proxy:5432']
+          resources:
+            {{- toYaml .Values.job.initdbScripts.initContainers.resources | nindent 12 }}
 {{- end }}

@@ -1,4 +1,4 @@
-{{ if .Values.job.autoUpdateClusterSpec }}
+{{ if .Values.job.autoUpdateClusterSpec.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -30,6 +30,8 @@ spec:
           image: "{{ .Values.etcdImage.repository }}:{{ .Values.etcdImage.tag }}"
           imagePullPolicy: {{ .Values.etcdImage.pullPolicy }}
           command: ["sh", "-c", "while ! etcdctl --endpoints {{ .Values.store.endpoints }} cluster-health; do sleep 1 && echo -n .; done"]
+          resources:
+            {{- toYaml .Values.job.autoUpdateClusterSpec.initContainers.resources | nindent 12 }}
   {{- end }}
       containers:
         - name: {{ template "stolon.fullname" . }}-update-cluster-spec
@@ -47,4 +49,6 @@ spec:
             {{- end }}
             - -p
             - '{ {{- range $key, $value := .Values.clusterSpec }} {{ $key | quote }}: {{ if typeIs "string" $value }} {{ $value | quote }} {{ else }} {{ $value }} {{ end }}, {{- end }} {{ if .Values.tls.enabled }}"pgParameters": {{- $pgParameters := .Values.pgParameters -}}{{ $all := set $pgParameters "ssl" "on" }}{{ $all := set $all "ssl_cert_file" "/certs/serverCrt.crt" }} {{ $all := set $all "ssl_key_file" "/certs/serverKey.key" }}{{ $all := set $all "ssl_ca_file" "/certs/rootCa.crt" }}{{ toJson $all }} {{ else }}"pgParameters": {{- $pgParameters := .Values.pgParameters -}}{{ $all := set $pgParameters "ssl" "off" }}{{ $all := set $all "ssl_cert_file" nil }} {{ $all := set $all "ssl_key_file" nil }}{{ $all := set $all "ssl_ca_file" nil }}{{ toJson $all }}{{ end}}}'
+          resources:
+            {{- toYaml .Values.job.autoUpdateClusterSpec.resources | nindent 12 }}
 {{ end }}
