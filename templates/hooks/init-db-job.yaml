@@ -64,6 +64,9 @@ spec:
           - mountPath: "/tmp/sql-script"
             readOnly: true
             name: sql-script
+        resources:
+{{ toYaml .Values.job.resources | indent 10 }}
+
       volumes:
         - name: sql-script
           configMap:

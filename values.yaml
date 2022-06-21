@@ -93,6 +93,7 @@ job:
   autoCreateCluster: true
   autoUpdateClusterSpec: true
   annotations: {}
+  resources: {}
 
 clusterSpec: {}
   # sleepInterval: 1s
