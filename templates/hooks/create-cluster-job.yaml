@@ -1,4 +1,4 @@
-{{ if and .Release.IsInstall .Values.job.autoCreateCluster }}
+{{ if and .Release.IsInstall .Values.job.autoCreateCluster.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -30,6 +30,8 @@ spec:
           image: "{{ .Values.etcdImage.repository }}:{{ .Values.etcdImage.tag }}"
           imagePullPolicy: {{ .Values.etcdImage.pullPolicy }}
           command: ["sh", "-c", "while ! etcdctl --endpoints {{ .Values.store.endpoints }} cluster-health; do sleep 1 && echo -n .; done"]
+          resources:
+            {{- toYaml .Values.job.autoCreateCluster.initContainers.resources | nindent 12 }}
   {{- end }}
       containers:
         - name: {{ template "stolon.fullname" . }}-create-cluster
@@ -47,4 +49,6 @@ spec:
             {{- end }}
             - --yes
             - '{ "initMode": "new", {{- range $key, $value := .Values.clusterSpec }} {{ $key | quote }}: {{ if typeIs "string" $value }} {{ $value | quote }} {{ else }} {{ $value }} {{ end }}, {{- end }} {{ if .Values.tls.enabled }} "pgParameters": {{- $pgParameters := .Values.pgParameters -}}{{ $all_init := set $pgParameters "ssl" "on" }}{{ $all_init := set $all_init "ssl_cert_file" "/certs/serverCrt.crt" }} {{ $all_init := set $all_init "ssl_key_file" "/certs/serverKey.key" }}{{ $all_init := set $all_init "ssl_ca_file" "/certs/rootCa.crt" }}{{ toJson $all_init }}{{ else }}"pgParameters": {{ toJson .Values.pgParameters }} {{ end}} }'
+          resources:
+            {{- toYaml .Values.job.autoCreateCluster.resources | nindent 12 }}
 {{ end }}

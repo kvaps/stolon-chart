@@ -64,8 +64,15 @@ Kubernetes is the default store backend. `consul`, `etcdv2` or `etcdv3` can also
 | `serviceMonitor.namespace`              | Set to use a different value than the release namespace for deploying the ServiceMonitor object | `nil`       |
 | `serviceMonitor.interval`               | Set to use a different value than the default Prometheus scrape interval | `nil`                              |
 | `serviceMonitor.scrapeTimeout`          | Set to use a different value than the default Prometheus scrape timeout | `nil`                               |
-| `job.autoCreateCluster`                 | Set to `false` to force-disable auto-cluster-creation which may clear pre-existing postgres db data | `true`  |
-| `job.autoUpdateClusterSpec`             | Set to `false` to force-disable auto-cluster-spec-update | `true`                                             |
+| `job.autoCreateCluster.enabled`         | Set to `false` to force-disable auto-cluster-creation which may clear pre-existing postgres db data | `true`  |
+| `job.autoCreateCluster.resources`       | Job autoCreaterCluster containers resources    | `{}`                                                         |
+| `job.autoCreateCluster.initContainers.resources` | Job autoCreaterCluster initContainers resources | `{}`                                               |
+| `job.initdbScripts.enabled`             | Set to `false` to force-disable initdb script execution | `true`                                              |
+| `job.initdbScripts.resources`           | Job initdbScripts containers resources         | `{}`                                                         |
+| `job.initdbScripts.initContainers.resources` | Job autoUpdateClusterSpec initContainers resources | `{}`                                                |
+| `job.autoUpdateClusterSpec.enabled`     | Set to `false` to force-disable auto-cluster-spec-update | `true`                                             |
+| `job.autoUpdateClusterSpec.resources`   | Job autoUpdateClusterSpec containers resources | `{}`                                                         |
+| `job.autoUpdateClusterSpec.initContainers.resources` | Job autoUpdateClusterSpec initContainers resources | `{}`                                        |
 | `job.annotations`                       | Annotations for Jobs, the value is evaluated as a template. | `{}`                                            |
 | `clusterSpec`                           | Stolon cluster spec [reference](https://github.com/sorintlab/stolon/blob/master/doc/cluster_spec.md) | `{}`   |
 | `tls.enabled`                           | Enable tls support to postgresql               | `false`                                                      |

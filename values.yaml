@@ -90,8 +90,21 @@ serviceMonitor:
   # scrapeTimeout: 10s
 
 job:
-  autoCreateCluster: true
-  autoUpdateClusterSpec: true
+  autoCreateCluster:
+    enabled: true
+    resources: {}
+    initContainers:
+      resources: {}
+  initdbScripts:
+    enabled: true
+    resources: {}
+    initContainers:
+      resources: {}
+  autoUpdateClusterSpec:
+    enabled: true
+    resources: {}
+    initContainers:
+      resources: {}
   annotations: {}
 
 clusterSpec: {}
@@ -198,6 +211,6 @@ sentinel:
 ## i.e. you can create tablespace directory here.
 ##
 # nodePostStartScript:
-#  postStartScript.sh: |
-#    #!/bin/bash
+#   postStartScript.sh: |
+#     #!/bin/bash
 #     echo "Do something."
