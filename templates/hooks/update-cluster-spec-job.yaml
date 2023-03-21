@@ -24,6 +24,10 @@ spec:
     spec:
       restartPolicy: OnFailure
       serviceAccountName: {{ template "stolon.serviceAccountName" . }}
+      {{- with .Values.job.autoUpdateClusterSpec.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
   {{- if eq .Values.store.backend "etcdv2" "etcdv3" }}
       initContainers:
         - name: {{ .Chart.Name }}-etcd-wait
@@ -32,6 +36,10 @@ spec:
           command: ["sh", "-c", "while ! etcdctl --endpoints {{ .Values.store.endpoints }} cluster-health; do sleep 1 && echo -n .; done"]
           resources:
             {{- toYaml .Values.job.autoUpdateClusterSpec.initContainers.resources | nindent 12 }}
+          {{- with .Values.job.autoUpdateClusterSpec.initContainers.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
   {{- end }}
       containers:
         - name: {{ template "stolon.fullname" . }}-update-cluster-spec
@@ -51,4 +59,8 @@ spec:
             - '{ {{- range $key, $value := .Values.clusterSpec }} {{ $key | quote }}: {{ if typeIs "string" $value }} {{ $value | quote }} {{ else }} {{ $value }} {{ end }}, {{- end }} {{ if .Values.tls.enabled }}"pgParameters": {{- $pgParameters := .Values.pgParameters -}}{{ $all := set $pgParameters "ssl" "on" }}{{ $all := set $all "ssl_cert_file" "/certs/serverCrt.crt" }} {{ $all := set $all "ssl_key_file" "/certs/serverKey.key" }}{{ $all := set $all "ssl_ca_file" "/certs/rootCa.crt" }}{{ toJson $all }} {{ else }}"pgParameters": {{- $pgParameters := .Values.pgParameters -}}{{ $all := set $pgParameters "ssl" "off" }}{{ $all := set $all "ssl_cert_file" nil }} {{ $all := set $all "ssl_key_file" nil }}{{ $all := set $all "ssl_ca_file" nil }}{{ toJson $all }}{{ end}}}'
           resources:
             {{- toYaml .Values.job.autoUpdateClusterSpec.resources | nindent 12 }}
+          {{- with .Values.job.autoUpdateClusterSpec.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
 {{ end }}

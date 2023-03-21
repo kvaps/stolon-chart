@@ -66,13 +66,22 @@ Kubernetes is the default store backend. `consul`, `etcdv2` or `etcdv3` can also
 | `serviceMonitor.scrapeTimeout`          | Set to use a different value than the default Prometheus scrape timeout | `nil`                               |
 | `job.autoCreateCluster.enabled`         | Set to `false` to force-disable auto-cluster-creation which may clear pre-existing postgres db data | `true`  |
 | `job.autoCreateCluster.resources`       | Job autoCreaterCluster containers resources    | `{}`                                                         |
+| `job.autoCreateCluster.podSecurityContext` | Job autoCreaterCluster Security Context for the Pod | `{}`                                                 |
+| `job.autoCreateCluster.securityContext` | Job autoCreaterCluster Security Context for the Containers | `{}`                                             |
 | `job.autoCreateCluster.initContainers.resources` | Job autoCreaterCluster initContainers resources | `{}`                                               |
+| `job.autoCreateCluster.initContainers.securityContext` | Job autoCreaterCluster Security Context for the initContainers | `{}`                          |
 | `job.initdbScripts.enabled`             | Set to `false` to force-disable initdb script execution | `true`                                              |
 | `job.initdbScripts.resources`           | Job initdbScripts containers resources         | `{}`                                                         |
-| `job.initdbScripts.initContainers.resources` | Job autoUpdateClusterSpec initContainers resources | `{}`                                                |
+| `job.initdbScripts.podSecurityContext` | Job initdbScripts Security Context for the Pod | `{}`                                                          |
+| `job.initdbScripts.securityContext` | Job initdbScripts Security Context for the Containers | `{}`                                                      |
+| `job.initdbScripts.initContainers.resources` | Job initdbScripts initContainers resources | `{}`                                                        |
+| `job.initdbScripts.initContainers.securityContext` | Job initdbScripts Security Context for the initContainers | `{}`                                   |
 | `job.autoUpdateClusterSpec.enabled`     | Set to `false` to force-disable auto-cluster-spec-update | `true`                                             |
 | `job.autoUpdateClusterSpec.resources`   | Job autoUpdateClusterSpec containers resources | `{}`                                                         |
+| `job.autoUpdateClusterSpec.podSecurityContext` | Job autoUpdateClusterSpec Security Context for the Pod | `{}`                                          |
+| `job.autoUpdateClusterSpec.securityContext` | Job autoUpdateClusterSpec Security Context for the Containers | `{}`                                      |
 | `job.autoUpdateClusterSpec.initContainers.resources` | Job autoUpdateClusterSpec initContainers resources | `{}`                                        |
+| `job.autoUpdateClusterSpec.initContainers.securityContext` | Job autoUpdateClusterSpec Security Context for the initContainers | `{}`                   |
 | `job.annotations`                       | Annotations for Jobs, the value is evaluated as a template. | `{}`                                            |
 | `clusterSpec`                           | Stolon cluster spec [reference](https://github.com/sorintlab/stolon/blob/master/doc/cluster_spec.md) | `{}`   |
 | `tls.enabled`                           | Enable tls support to postgresql               | `false`                                                      |
@@ -83,8 +92,9 @@ Kubernetes is the default store backend. `consul`, `etcdv2` or `etcdv3` can also
 | `keeper.uid_prefix`                     | Keeper prefix name                             | `keeper`                                                     |
 | `keeper.replicaCount`                   | Number of keeper nodes                         | `2`                                                          |
 | `keeper.resources`                      | Keeper resource requests/limit                 | `{}`                                                         |
+| `keeper.podSecurityContext`             | Keeper Security Context for the Pod            | `{}`                                                         |
+| `keeper.securityContext`                | Keeper Security Context for the Containers     | `{}`                                                         |
 | `keeper.priorityClassName`              | Keeper priorityClassName                       | `nil`                                                        |
-| `keeper.fsGroup`                        | Keeper securityContext fsGroup, do not set if pg9 or 10 | ``                                                  |
 | `keeper.nodeSelector`                   | Node labels for keeper pod assignment          | `{}`                                                         |
 | `keeper.affinity`                       | Affinity settings for keeper pod assignment    | `{}`                                                         |
 | `keeper.tolerations`                    | Toleration labels for keeper pod assignment    | `[]`                                                         |
@@ -97,6 +107,8 @@ Kubernetes is the default store backend. `consul`, `etcdv2` or `etcdv3` can also
 | `keeper.extraEnv`                       | Extra [environment variables](https://github.com/sorintlab/stolon/blob/master/doc/commands_invocation.md#commands-invocation) for keeper | `[]` |
 | `proxy.replicaCount`                    | Number of proxy nodes                          | `2`                                                          |
 | `proxy.resources`                       | Proxy resource requests/limit                  | `{}`                                                         |
+| `proxy.podSecurityContext`              | Proxy Security Context for the Pod             | `{}`                                                         |
+| `proxy.securityContext`                 | Proxy Security Context for the Containers      | `{}`                                                         |
 | `proxy.priorityClassName`               | Proxy priorityClassName                        | `nil`                                                        |
 | `proxy.nodeSelector`                    | Node labels for proxy pod assignment           | `{}`                                                         |
 | `proxy.affinity`                        | Affinity settings for proxy pod assignment     | `{}`                                                         |
@@ -107,6 +119,8 @@ Kubernetes is the default store backend. `consul`, `etcdv2` or `etcdv3` can also
 | `proxy.extraEnv`                        | Extra [environment variables](https://github.com/sorintlab/stolon/blob/master/doc/commands_invocation.md#commands-invocation) for proxy | `[]` |
 | `sentinel.replicaCount`                 | Number of sentinel nodes                       | `2`                                                          |
 | `sentinel.resources`                    | Sentinel resource requests/limit               | `{}`                                                         |
+| `sentinel.podSecurityContext`           | Sentinel Security Context for the Pod          | `{}`                                                         |
+| `sentinel.securityContext`              | Sentinel Security Context for the Containers   | `{}`                                                         |
 | `sentinel.priorityClassName`            | Sentinel priorityClassName                     | `nil`                                                        |
 | `sentinel.nodeSelector`                 | Node labels for sentinel pod assignment        | `{}`                                                         |
 | `sentinel.affinity`                     | Affinity settings for sentinel pod assignment  | `{}`                                                         |
