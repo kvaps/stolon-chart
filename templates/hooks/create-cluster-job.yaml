@@ -22,6 +22,10 @@ spec:
 {{ toYaml .Values.job.annotations | indent 8 }}
 {{- end }}
     spec:
+{{- with .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+{{- end }}
       restartPolicy: OnFailure
       serviceAccountName: {{ template "stolon.serviceAccountName" . }}
   {{- if eq .Values.store.backend "etcdv2" "etcdv3" }}
