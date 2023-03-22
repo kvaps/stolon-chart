@@ -14,9 +14,10 @@ kind: Job
 metadata:
   name: '{{template "stolon.clusterName" .}}-createdb'
   labels:
-    heritage: {{.Release.Service | quote }}
-    release: {{.Release.Name | quote }}
-    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    app: {{ template "stolon.name" . }}
+    chart: {{ template "stolon.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "2"
@@ -26,15 +27,15 @@ spec:
     metadata:
       name: "{{.Release.Name}}"
       labels:
-        heritage: {{.Release.Service | quote }}
-        release: {{.Release.Name | quote }}
-        chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+        app: {{ template "stolon.fullname" . }}
+        release: {{ .Release.Name }}
 {{- if .Values.job.annotations }}
       annotations:
 {{ toYaml .Values.job.annotations | indent 8 }}
 {{- end }}
     spec:
-      restartPolicy: Never
+      restartPolicy: OnFailure
+      serviceAccountName: {{ template "stolon.serviceAccountName" . }}
       containers:
       - name: create-database-job
         image: 'postgres'
