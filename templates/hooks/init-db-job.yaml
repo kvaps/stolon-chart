@@ -35,6 +35,10 @@ spec:
 {{- end }}
     spec:
       restartPolicy: Never
+      {{- with .Values.job.initdbScripts.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - name: create-database-job
         image: 'postgres'
@@ -62,6 +66,10 @@ spec:
         command: ["/bin/bash", "-e", "/tmp/sql-script/create_script.sh"]
         resources:
           {{- toYaml .Values.job.initdbScripts.resources | nindent 10 }}
+        {{- with .Values.job.initdbScripts.securityContext }}
+        securityContext:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
         volumeMounts:
           - mountPath: "/tmp/sql-script"
             readOnly: true
@@ -77,4 +85,8 @@ spec:
           command: ['dockerize', '-timeout', '30s', '-wait', 'tcp://{{ template "stolon.fullname" . }}-proxy:5432']
           resources:
             {{- toYaml .Values.job.initdbScripts.initContainers.resources | nindent 12 }}
+          {{- with .Values.job.initdbScripts.initContainers.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
 {{- end }}

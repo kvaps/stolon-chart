@@ -93,18 +93,27 @@ job:
   autoCreateCluster:
     enabled: true
     resources: {}
+    podSecurityContext: {}
+    securityContext: {}
     initContainers:
       resources: {}
+      securityContext: {}
   initdbScripts:
     enabled: true
     resources: {}
+    podSecurityContext: {}
+    securityContext: {}
     initContainers:
       resources: {}
+      securityContext: {}
   autoUpdateClusterSpec:
     enabled: true
     resources: {}
+    podSecurityContext: {}
+    securityContext: {}
     initContainers:
       resources: {}
+      securityContext: {}
   annotations: {}
 
 clusterSpec: {}
@@ -127,8 +136,9 @@ keeper:
   replicaCount: 2
   annotations: {}
   resources: {}
+  podSecurityContext: {}
+  securityContext: {}
   priorityClassName: ""
-  fsGroup: ""
   service:
     type: ClusterIP
     annotations: {}
@@ -156,6 +166,8 @@ proxy:
   replicaCount: 2
   annotations: {}
   resources: {}
+  podSecurityContext: {}
+  securityContext: {}
   priorityClassName: ""
   service:
     type: ClusterIP
@@ -186,6 +198,8 @@ sentinel:
   replicaCount: 2
   annotations: {}
   resources: {}
+  podSecurityContext: {}
+  securityContext: {}
   priorityClassName: ""
   nodeSelector: {}
   affinity: {}
